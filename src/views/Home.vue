@@ -346,23 +346,6 @@
 
 
 
-
-
-            <v-col 
-              cols="12"
-              sm="6">
-                <v-text-field
-                  ref="input_start_time"
-                  label="출발시간*"
-                  v-model="input_start_time"
-                  :rules="[() => !!input_start_time || '출발시간을 입력하세요.']"
-                  required
-                  placeholder="ex) 8:00"
-                ></v-text-field>
-              </v-col>
-
-
-
               
 
 
@@ -392,7 +375,7 @@
                   v-model="input_destination_time"
                   :rules="[() => !!input_destination_time || '목적지 도착 시간을 입력 하세요.']"
                   required
-                  placeholder="ex) 8:50"
+                  placeholder="ex) 8:50 or 13:20"
                 ></v-text-field>
               </v-col>
 
@@ -466,7 +449,7 @@
            <v-spacer></v-spacer>
 
 
-          <v-btn color="primary" flat @click="[submit()&&insertNew()]" text>Submit</v-btn>
+          <v-btn color="primary" flat @click="[submit() , insertNew()]" text>Submit</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -476,24 +459,6 @@
 </v-container>
      
 
-
-
-
-
-<!-- 이름을 기준으로 데이터 정렬 -->
-
-
-  <!-- <v-data-table
-    v-if="search_button=='false'"
-
-    
-    max-width:200px
-    :headers="headers"
-    :items="get_list"
-    :items-per-page="5"
-    item-key="name"
-
-  ></v-data-table>  -->
 
 
 <v-simple-table>
@@ -587,7 +552,7 @@
     v-if="search_button=='true'">
       <thead>
         <tr>
-          <th class="text-left">
+          <th class="text-left" width="9%">
             이름
           </th>
 
@@ -627,8 +592,6 @@
             탑승시간
           </th>
 
-          
-
           <th class="text-left">
             추가시간
           </th>
@@ -637,16 +600,122 @@
             거리차이
           </th>
 
+           <th class="text-left">
+
+          </th>
+
           
 
         </tr>
       </thead>
       <tbody>
         <tr
-          v-for="item in get_list" 
+          v-for="item in get_search_list" 
           :key="item.name"
         >
-          <td v-if="item.starting_point===search_starting_point 
+
+          <td width="7%">{{ item.name }}</td>
+          <td width="7%">{{ item.gender }}</td>
+          <td width="7%">{{ item.max_passenger }}</td>
+          <td width="7%">{{ item.start_date }}</td>
+          <td width="7%">{{ item.end_date }}</td>
+          <td width="9%">{{ item.dotw }}</td>
+          <td width="9%">{{ item.starting_point }}</td>
+          <td width="9%">{{ item.gender }}</td>
+          <td width="9%">{{ item.destination_point }}</td>
+          <td width="9%">{{ item.destination_point }}</td>
+          <td width="9%">{{ item.desired_arrival_time }}</td>
+          <td width="9%">{{ item.ride_time}}</td>
+          <td width="9%">{{ item.time_difference}}</td>
+          <td width="9%">{{ item.distance_difference}}</td>
+
+
+<td width="7%">
+  <template>
+  <v-row justify="center">
+    <v-dialog
+      v-model="dialog2"
+      persistent
+      max-width="600px"
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          color="primary"
+          dark
+          v-bind="attrs"
+          v-on="on"
+        >
+          신청
+        </v-btn>
+      </template>
+      <v-card>
+        <v-card-title>
+          <span class="text-h5">카풀 신청</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col
+                cols="12"
+              >
+                <v-text class="h3"> (탑승자)출발지 : {{search_starting_point}}</v-text>
+              </v-col>
+
+              <v-col
+                cols="12"
+              >
+                <v-text> 카풀 시작일 : {{search_dates[0]}}</v-text>
+              </v-col>
+
+              <v-col
+                cols="12"
+              >
+                <v-text> 카풀 종료일 : {{search_dates[1]}}</v-text>
+              </v-col>
+
+
+              <v-col cols="12">
+                <v-text> 카풀 요일 : {{search_dotw.join(',')}}</v-text>
+              </v-col>
+
+
+              <v-col cols="12">
+                <v-text-field
+                  v-model="candidate_desired_time"
+                  label="탑승 희망 시간 ( 직접 입력. ex: 08:45 )"
+                  required
+                ></v-text-field>
+              </v-col>
+              {{candidate_desired_time}}
+             
+            </v-row>
+          </v-container>
+          <small>*indicates required field</small>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="dialog2 = false"
+          >
+            취소
+          </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="[candidate(), dialog2=false]"
+          >
+            신청
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-row>
+  </template>
+</td>
+
+          <!-- <td v-if="item.starting_point===search_starting_point 
           && item.destination_point===search_destination_point 
           && item.gender===search_gender"
           width="9%">{{ item.name }}</td>
@@ -709,7 +778,7 @@
           <td v-if="item.starting_point===search_starting_point 
           && item.destination_point===search_destination_point
           && search_gender==='상관없음'"
-          width="7%">{{ item.desired_arrival_time }}</td> <!-- 도착 시간 -->
+          width="7%">{{ item.desired_arrival_time }}</td>  도착 시간 
 
           <td v-if="item.starting_point===search_starting_point 
           && item.destination_point===search_destination_point
@@ -755,7 +824,7 @@
           <td v-if="item.starting_point===search_starting_point 
           && item.destination_point===search_destination_point
           && search_gender==='상관없음'"
-          width="7%">{{ item.extra_distance }}</td>
+          width="7%">{{ item.extra_distance }}</td> -->
         </tr>
       </tbody>
     </template>
@@ -783,7 +852,7 @@ export default {
 
           // 카풀 search 할 때 필요한 데이터들
             search_button:'false',
-            search_starting_point:'',
+            search_starting_point:'', // 카풀 검색
             search_destination_point:'',
             search_gender:'',
             search_dotw:'',
@@ -796,28 +865,32 @@ export default {
             
 
 
-          // 카풀 등록할 때 필요한 데이터들
-            dialog: false,
+
+            dialog: false, // 카풀 등록할 dialog
+            dialog2: false,  // 신청 dialog 
 
   
 
             errorMessages: '',
 
-            input_name: null,
+            input_name: null, // 카풀 등록
             input_gender: null,
             input_max_passenger: null,
             input_dates: ['2022-06-01', '2022-06-08'],
+
             input_dotw: null,
             input_starting_point:null,
-            input_start_time: null,
             input_destination_point:null,
             input_destination_time:null,
+
             input_car_number:null,
             input_car_type:null,
 
             formHasErrors: false,
-
             insert_error:false,
+
+
+            candidate_desired_time : null, // 카풀 신청. 탑승 희망 시간
 
 
       
@@ -829,25 +902,6 @@ export default {
       get_list: [], // 데이터 받는 리스트
       get_search_list:[],
 
-
-      headers: [
-        { text: '이름',align: 'center', sortable: false,value: 'name', width : 70},
-        { text: '성별', align: 'center', sortable: false, value: 'gender',width : 60 },
-        { text: '남은자리', align: 'center', sortable: false, value: 'max_passenger',width : 75  },
-        { text: '시작일', align: 'center', sortable: false, value: 'start_date' ,width : 65 },
-
-      // { text: '종료일', align: 'center', sortable: false, value: 'end_date' ,width : 65 }, 
-
-         { text: '요일', align: 'center', sortable: false, value: 'dotw' ,width : 70 },
-        // { text: '출발시간', align: 'center', value: 'start_time',width : 90  },
-         { text: '출발지', align: 'center', sortable: false, value: 'starting_point',width : 75  },
-         { text: '도착지', align: 'center', sortable: false, value: 'destination_point',width : 75  },
-        
-        // { text: '탑승시간', align: 'center',  value: 'estimated_start_time',width : 75  },
-        // { text: '도착시간', align: 'center',  value: 'destination_time',width : 75  },
-        // { text: '추가시간', align: 'center',  value: 'extra_time' ,width : 75 },
-        // { text: '거리 차이', align: 'center',  value: 'extra_distance' ,width : 75 },
-      ],
     }
   },
 
@@ -877,14 +931,13 @@ export default {
         return {
           input_name: this.input_name,
           input_gender: this.input_gender,
-          input_max_passenger: this.input_max_passenger,
-
+          input_max_passenger: this.input_max_passenger, 
+          
           input_dotw: this.input_dotw, // 요일
-          input_starting_point: this.input_starting_point,
-          input_start_time: this.input_start_time,
-
+          input_starting_point: this.input_starting_point, 
           input_destination_point:this.input_destination_point,
           input_destination_time:this.input_destination_time,
+
           input_car_number:this.input_car_number,
           input_car_type:this.input_car_type
         }
@@ -924,33 +977,6 @@ export default {
         })
       },
 
-      test2(){ // post test 하는 함수
-        axios
-        .post("https://reqres.in/api/users?page=2", 
-        {"email": this.test_name,
-        "frist_name": "leader",
-        "last_name": "leader2"}) // url 주소, 보내주는 데이터
-        .then(res => {
-          console.log(res)
-        })
-        .catch(err => {
-          console.log(err)
-        })
-        .then(()=>{
-
-        })
-      },
-
-      remove_gh(){
-        this.get_list.dotw
-      },
-
-
-
-
-
-
-
       
       resetForm () { // submit 했을 때, validation 검사 error 가 나오면 다시 정보 입력할 수 있는 refresh 진행.
         this.errorMessages = []
@@ -973,58 +999,67 @@ export default {
           this.insert_error = false
         }
 
+        console.log("submit 실행")
+
       },
 
-      insertNew() { // 카풀 등록 함수
+      insertNew() {     // 카풀 등록 함수
       axios
         .post("http://ec2-18-117-73-79.us-east-2.compute.amazonaws.com:3000/register", 
-        {"name": this.input_name,
-        "gender": this.input_gender,
-        "max_passenger": this.max_passenger,
-        "start_date": this.start_date,
-        "end_date": this.end_date,
-        "dotw": this.dotw,
-        "starting_point": this.starting_point, // url 주소, 보내주는 데이터
-        "destination_point": this.destination_point,})
-        
-        .then(res => {
+        {//"client_id": this.input_name, // 사용자id (DB id랑 동일)
+        //"gender": this.input_gender,
+        "max_passenger": this.input_max_passenger, // 최대 탑승자 수
+        "start_date": this.input_dates[0], // 시작일
+        "end_date": this.input_dates[1], // 종료일
+        "dotw": this.input_dotw, // 요일
+        "start_name": this.input_starting_point, // 출발지(운전자)
+        "goal_name": this.input_destination_point, // 도착지(운전자)
+        "arrival_time" : this.input_destination_time, // 도착 희망시간(운전자)
+        "car_num" : this.input_car_number, // 차량번호
+        "car_category" : this.car_category, // 차종
+
+        })
+       .then(res => {
           console.log(res)
-          console.log("inserNew 함수입니다. 카풀 등록 진행합니다")
+          console.log("insertNew 함수입니다. 카풀 등록 진행합니다")
+          this.resetForm() // 값 등록 성공후 자동으로 등록창 값 지운다.
         })
         .catch(err => {
           console.log(err)
+          console.log("insertNew 함수입니다. 카풀 등록 실패")
         })
         .then(()=>{
 
         })
 
-      if(this.insert_error==false){ // input 값이 다 입력되어 있어서 insert_error 가 false 이면, push 진행
-        this.list_test.push({
-        "name":this.input_name,
-        "gender":this.input_gender, 
-        "max_passenger":this.input_max_passenger,
-        "start_date":this.input_dates[0],
-        "end_date":this.input_dates[1],
-        "dotw":this.input_dotw,  
-        // "start_time":this.input_start_time,
-        "starting_point":this.input_starting_point,
-        "destination_point":this.input_destination_point, 
-        // "estimated_start_time":"", 
-        // "destination_time":this.input_destination_time, 
-        // "extra_time":"", 
-        // "extra_distance":"" })
-        })
-      }
+      // if(this.insert_error==false){ // input 값이 다 입력되어 있어서 insert_error 가 false 이면, push 진행
+      //   this.list_test.push({
+      //   "name":this.input_name,
+      //   "gender":this.input_gender, 
+      //   "max_passenger":this.input_max_passenger,
+      //   "start_date":this.input_dates[0],
+      //   "end_date":this.input_dates[1],
+      //   "dotw":this.input_dotw,  
+      //   // "start_time":this.input_start_time,
+      //   "starting_point":this.input_starting_point,
+      //   "destination_point":this.input_destination_point, 
+      //   // "estimated_start_time":"", 
+      //   // "destination_time":this.input_destination_time, 
+      //   // "extra_time":"", 
+      //   // "extra_distance":"" })
+      //   })
+      // }
 
 
-        this.resetForm() // 값 push 후 자동으로 등록창 값 지운다.
+
+
+
 
       
        },
 
 
         search_data_post(){
-
          axios
         .get( "http://ec2-18-117-73-79.us-east-2.compute.amazonaws.com:3000/filter",
         {"start_date":this.search_dates[0],
@@ -1039,12 +1074,41 @@ export default {
         .then(res => {
           console.log(res)
           this.get_search_list=res.data
-          console.log("search_data_post 함수입니다. 데이터를 서버로 보냅니다.")
+          console.log("search_data_post 함수입니다. 검색 값을 서버에 보내고 요청 데이터를 받아옵니다.")
           
         })
         .catch(err => {
           console.log(err)
           console.log('search_data_post 안옴;')
+        })
+        .then(()=>{
+
+        })
+
+
+       },
+
+       candidate(){
+        axios
+        .post( "http://ec2-18-117-73-79.us-east-2.compute.amazonaws.com:3000//candidate",
+        {"user_id":1, // 김인하로 진행
+        "carpool_id" : 1,
+        "start_name":this.search_starting_point, // 출발지(탑승자)
+        "start_date":this.search_dates[0], // 시작일
+        "end_date":this.search_dates[1], // 종료일
+        "dotw":this.search_dotw, // 요일
+        "desired_time":this.candidate_desired_time, // 탑승 희망 시간
+        },
+        )
+        .then(res => {
+          console.log(res)
+          this.get_search_list=res.data
+          console.log("candidate 함수입니다. 카풀 신청을 진행합니다.")
+          
+        })
+        .catch(err => {
+          console.log(err)
+          console.log('candidate 함수 안옴;')
         })
         .then(()=>{
 
