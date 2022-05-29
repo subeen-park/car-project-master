@@ -1,15 +1,59 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="desserts"
-    sort-by="calories"
-    class="elevation-1"
-  >
+  <v-simple-table>
+    <template 
+    v-slot:default>
+      <thead>
+        <tr>
+          <th class="text-left">
+            출발지
+          </th>
+
+          <th class="text-left">
+            목적지
+          </th>
+
+          <th class="text-left">
+            시작일
+          </th>
+
+          <th class="text-left">
+            종료일
+          </th>
+
+          <th class="text-left">
+            카풀 요일
+          </th>
+
+          <th class="text-left">
+            actions
+          </th>
+
+        </tr>
+      </thead>
+
+      <tbody>
+
+          <tr
+          v-for="driver in get_driver_list" 
+          :key="driver.name"
+        >
+          <td v-if="driver.name==='김인하'">{{ driver.starting_point }}</td>
+          <td v-if="driver.name==='김인하'">{{ driver.destination_point }}</td>
+          <td v-if="driver.name==='김인하'">{{ driver.start_date.substring(0,10) }}</td>
+          <td v-if="driver.name==='김인하'">{{ driver.end_date.substring(0,10) }}</td>
+          <td v-if="driver.name==='김인하'">{{ driver.dotw.join(',') }}</td>
+          
+          
+          </tr>
+      </tbody>
+      
+      
+    </template>
     <template v-slot:top>
       <v-toolbar
         flat
       >
-        <v-toolbar-title>운전자로 등록된 카풀 리스트</v-toolbar-title>
+        <v-toolbar-title>김인하님이 운전자 등록된 카풀 리스트</v-toolbar-title>
 
         
         <v-divider
@@ -19,11 +63,7 @@
         ></v-divider>
         <v-spacer></v-spacer>
 
-<div 
-  v-for="test3 in test3_data"
-  :key="test3.id">
-            <p>{{ test3.name }}</p>
-        </div>
+
 
         <v-dialog
           v-model="dialog"
@@ -187,7 +227,7 @@
         Reset
       </v-btn>
     </template>
-  </v-data-table>
+  </v-simple-table>
 
 
 
@@ -208,7 +248,8 @@ import axios from "axios"
 
       users: null,
       test2_data: null,
-      test3_data: null,
+
+      get_driver_list: [],
 
       dialog: false,
       dialogDelete: false,
@@ -216,18 +257,13 @@ import axios from "axios"
 
       
       headers: [
-        {
-          text: '동승자',
-          align: 'start',
-          sortable: false,
-          value: 'id', // 운전자의 동승자 ,,
-        },
-        { text: '카풀 기간', value: 'email' },
-        { text: '카풀 요일', value: 'first_name' },
-        { text: '출발지', value: 'last_name' },
-       // { text: '도착지', value: 'driver_destination' },
-        //{ text: '출발 시간', value: 'driver_start_time', sortable: false },
-        //{ text: '도착 시간', value: 'driver_destination_time', sortable: false },
+        //{text: '동승자', align: 'start',sortable: false,value: 'id'}, // 운전자의 동승자
+        { text: '시작일', value: 'start_date' },
+       // { text: '카풀 요일', value: 'first_name' },
+        { text: '출발지', value: 'starting_point' },
+        { text: '도착지', value: 'destination_point' },
+        //{ text: '출발 시간', value: 'start_time', sortable: false },
+        //{ text: '도착 시간', value: 'destination_time', sortable: false },
         { text: 'Actions', value: 'actions', sortable: false },
       ],
       desserts: [],
@@ -265,8 +301,7 @@ import axios from "axios"
 
     created () {
       this.test();
-      this.test2();
-      this.test3();
+      this.get_driver();
       
     },
 
@@ -282,27 +317,14 @@ import axios from "axios"
           console.log(err);
         });
         },
-
-        test2(){
-        axios
-        .get("https://reqres.in/api/users/2")
-        .then(res => {
-          console.log(res);
-          //this.test2_data=res.data.data
-        })
-        .catch(err => {
-          console.log(err);
-        });
-
-        },
         
 
-        test3(){
+        get_driver(){
         axios
         .get("http://ec2-18-117-73-79.us-east-2.compute.amazonaws.com:3000/list")
         .then(res => {
           console.log(res.data);
-          this.test3_data=res.data.data
+          this.get_driver_list=res.data.data
         })
         .catch(err => {
           console.log(err);

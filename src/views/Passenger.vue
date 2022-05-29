@@ -9,7 +9,7 @@
       <v-toolbar
         flat
       >
-        <v-toolbar-title>동승자로 등록된 카풀 리스트</v-toolbar-title>
+        <v-toolbar-title>김인하님이 운전자로 등록된 카풀 리스트</v-toolbar-title>
         <v-divider
           class="mx-4"
           inset
