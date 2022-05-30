@@ -16,6 +16,7 @@
 <p>요일 :{{search_dotw}}</p>
 <p>성별 :{{search_gender}}</p>
 <p>도착시간 :{{search_destination_time}}</p>
+<p></p>
 
 <v-spacer></v-spacer>
 
