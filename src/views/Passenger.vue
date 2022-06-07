@@ -9,7 +9,7 @@
       <v-toolbar
         flat
       >
-        <v-toolbar-title>김인하님이 운전자로 등록된 카풀 리스트</v-toolbar-title>
+        <v-toolbar-title>김인하님이 탑승자로 등록된 카풀 리스트</v-toolbar-title>
         <v-divider
           class="mx-4"
           inset
@@ -140,7 +140,7 @@
         </v-dialog>
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
-            <v-card-title class="text-h5">Are you sure you want to delete this carpool driver list?</v-card-title>
+            <v-card-title class="text-h5">등록한 카풀 리스트를 삭제하겠습니까?</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
