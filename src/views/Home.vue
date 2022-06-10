@@ -438,6 +438,10 @@
     v-if="search_button=='false'">
       <thead>
         <tr>
+
+          <th class="text-center" align="center">
+            no
+          </th>
           
           <th class="text-center" align="center">
             이름
@@ -484,7 +488,9 @@
         <tr
           v-for="item in get_list" 
           :key="item.name"
+          sor
         >
+          <td width="5%" align="center">{{ item.carpool_id }}</td>
           <td width="9%" align="center">{{ item.name }}</td>
           <td width="7%" align="center">{{ item.gender }}</td>
           <td width="7%" align="center">{{ item.max_passenger }}</td>
@@ -508,6 +514,11 @@
     v-if="search_button=='true'">
       <thead>
         <tr>
+
+          <th class="text-left" width="5%">
+            no
+          </th>
+
           <th class="text-left" width="9%">
             이름
           </th>
@@ -569,7 +580,7 @@
           v-for="item2 in get_search_list" 
           :key="item2.name"
         >
-
+          <td width="5%">{{ item2.carpool_id }}</td>
           <td width="7%">{{ item2.name }}</td>
           <td width="7%">{{ item2.gender }}</td>
           <td width="7%">{{ item2.max_passenger }}</td>
@@ -668,116 +679,6 @@
   </template>
 </td>
 
-          <!-- <td v-if="item.starting_point===search_starting_point 
-          && item.destination_point===search_destination_point 
-          && item.gender===search_gender"
-          width="9%">{{ item.name }}</td>
-          <td v-if="item.starting_point===search_starting_point 
-          && item.destination_point===search_destination_point 
-          && search_gender==='상관없음'"
-          width="9%">{{ item.name }}</td>
-
-          <td v-if="item.starting_point===search_starting_point
-          && item.destination_point===search_destination_point
-          && item.gender===search_gender"
-          width="7%">{{ item.gender }}</td>
-          <td v-if="item.starting_point===search_starting_point
-          && item.destination_point===search_destination_point
-          && search_gender==='상관없음'"
-          width="7%">{{ item.gender }}</td>
-
-          <td v-if="item.starting_point===search_starting_point 
-          && item.destination_point===search_destination_point
-          && item.gender===search_gender"
-          width="7%">{{ item.max_passenger }}</td>
-          <td v-if="item.starting_point===search_starting_point 
-          && item.destination_point===search_destination_point
-          && search_gender==='상관없음'"
-          width="7%">{{ item.max_passenger }}</td>
-
-          <td v-if="item.starting_point===search_starting_point 
-          && item.destination_point===search_destination_point
-          && item.gender===search_gender"
-          width="8%">{{ item.start_date.substring(0,10) }}</td>
-          <td v-if="item.starting_point===search_starting_point 
-          && item.destination_point===search_destination_point
-          && search_gender==='상관없음'"
-          width="8%">{{ item.start_date.substring(0,10) }}</td>
-
-
-          <td v-if="item.starting_point===search_starting_point 
-          && item.destination_point===search_destination_point
-          && item.gender===search_gender"
-          width="8%">{{ item.end_date.substring(0,10) }}</td>
-          <td v-if="item.starting_point===search_starting_point 
-          && item.destination_point===search_destination_point
-          && search_gender==='상관없음'"
-          width="8%">{{ item.end_date.substring(0,10) }}</td>
-
-
-          <td v-if="item.starting_point===search_starting_point 
-          && item.destination_point===search_destination_point
-          && item.gender===search_gender"
-          width="8%">{{ item.dotw.join(',') }}</td>
-          <td v-if="item.starting_point===search_starting_point 
-          && item.destination_point===search_destination_point
-          && search_gender==='상관없음'"
-          width="8%">{{ item.dotw.join(',') }}</td>
-
-          <td v-if="item.starting_point===search_starting_point 
-          && item.destination_point===search_destination_point
-          && item.gender===search_gender"
-          width="7%">{{ item.desired_arrival_time }}</td>
-          <td v-if="item.starting_point===search_starting_point 
-          && item.destination_point===search_destination_point
-          && search_gender==='상관없음'"
-          width="7%">{{ item.desired_arrival_time }}</td>  도착 시간 
-
-          <td v-if="item.starting_point===search_starting_point 
-          && item.destination_point===search_destination_point
-          && item.gender===search_gender"
-          width="9%">{{ item.starting_point }}</td>
-          <td v-if="item.starting_point===search_starting_point 
-          && item.destination_point===search_destination_point
-          && search_gender==='상관없음'"
-          width="9%">{{ item.starting_point }}</td>
-
-          <td v-if="item.starting_point===search_starting_point 
-          && item.destination_point===search_destination_point
-          && item.gender===search_gender"
-          width="9%">{{ item.destination_point }}</td>
-          <td v-if="item.starting_point===search_starting_point 
-          && item.destination_point===search_destination_point
-          && search_gender==='상관없음'"
-          width="9%">{{ item.destination_point }}</td>
-
-          
-          <td v-if="item.starting_point===search_starting_point 
-          && item.destination_point===search_destination_point
-          && item.gender===search_gender"
-          width="7%">{{ item.estimated_start_time }}</td>
-          <td v-if="item.starting_point===search_starting_point 
-          && item.destination_point===search_destination_point
-          && search_gender==='상관없음'"
-          width="7%">{{ item.estimated_start_time }}</td>
-
-          <td v-if="item.starting_point===search_starting_point 
-          && item.destination_point===search_destination_point
-          && item.gender===search_gender"
-          width="7%">{{ item.extra_time }}</td>
-          <td v-if="item.starting_point===search_starting_point 
-          && item.destination_point===search_destination_point
-          && search_gender==='상관없음'"
-          width="7%">{{ item.extra_time }}</td>
-
-          <td v-if="item.starting_point===search_starting_point 
-          && item.destination_point===search_destination_point
-          && item.gender===search_gender"
-          width="7%">{{ item.extra_distance }}</td>
-          <td v-if="item.starting_point===search_starting_point 
-          && item.destination_point===search_destination_point
-          && search_gender==='상관없음'"
-          width="7%">{{ item.extra_distance }}</td> -->
         </tr>
       </tbody>
     </template>
@@ -845,6 +746,40 @@ export default {
             candidate_desired_time : null, // 카풀 신청. 탑승 희망 시간
 
 
+
+
+            // 정렬 옵션 추가하는 data table
+/*
+          headers: [
+          { text: 'no', value: 'carpool_id' },
+          { text: '이름', value: 'name' },
+          { text: '성별', value: 'gender' },
+          { text: '남은자리', value: 'max_passenger' },
+          { text: '시작일', value: 'start_date' },
+          { text: '종료일', value: 'end_date' },
+          { text: '요일', value: 'dotw' },
+          { text: '도착시간', value: 'desired_arrival_time' },
+          { text: '출발지', value: 'starting_point' },
+          { text: '도착지', value: 'destination_point' },
+          ],
+
+          contents: [
+          { carpool_id: get_list.carpool_id, 
+          name: get_list.name, 
+          gender: get_list.gender, 
+          max_passenger: get_list.max_passenger,
+          start_date: get_list.start_date, 
+          end_date: get_list.end_date, 
+          dotw: get_list.dotw, 
+          desired_arrival_time: get_list.desired_arrival_time,
+          starting_point: get_list.starting_point, destination_point : get_list.destination_point },
+          ],
+
+          */
+
+
+
+
       
 
 
@@ -877,6 +812,10 @@ export default {
 
       dateRangeText_input () {
         return this.input_dates.join(' ~ ')
+      },
+
+      sort(){
+
       },
 
       form() { // 카풀 등록 데이터
@@ -920,7 +859,7 @@ export default {
 
       get_data(){ // 데이터 처음부터 가져와줌.
         axios
-        .get("http://ec2-18-117-73-79.us-east-2.compute.amazonaws.com:3000/list")
+        .get("http://ec2-3-37-128-210.ap-northeast-2.compute.amazonaws.com:3000/list")
         .then(res => {
           console.log(res.data)
           this.get_list=res.data.data
@@ -963,7 +902,7 @@ export default {
 
       insertNew() {     // 카풀 등록 함수
       axios
-        .post("http://ec2-18-117-73-79.us-east-2.compute.amazonaws.com:3000/register", 
+        .post("http://ec2-3-37-128-210.ap-northeast-2.compute.amazonaws.com:3000/register", 
         {client_id: 1, // 사용자id (DB id랑 동일)
         max_passenger: this.input_max_passenger, // 최대 탑승자 수
         start_date: this.input_dates[0], // 시작일
@@ -1021,7 +960,7 @@ export default {
         if(this.search_gender === "상관없음"){ // gender 가 상관 없음이면
             
 
-         axios.get( "http://ec2-18-117-73-79.us-east-2.compute.amazonaws.com:3000/filter",
+        axios.get( "http://ec2-3-37-128-210.ap-northeast-2.compute.amazonaws.com:3000/filter",
         {params:{
         start_date:this.search_dates[0],
         end_date:this.search_dates[1],
@@ -1045,7 +984,7 @@ export default {
 
         })
         } else { // gender 가 Male 또는 Female 이면
-         axios.get( "http://ec2-18-117-73-79.us-east-2.compute.amazonaws.com:3000/filter",
+         axios.get( "http://ec2-3-37-128-210.ap-northeast-2.compute.amazonaws.com:3000/filter",
         {params:{
         start_date:this.search_dates[0],
         end_date:this.search_dates[1],
@@ -1075,9 +1014,9 @@ export default {
 
        candidate(){
         axios
-        .post( 'http://ec2-18-117-73-79.us-east-2.compute.amazonaws.com:3000/candidate',
+        .post( 'http://ec2-3-37-128-210.ap-northeast-2.compute.amazonaws.com:3000/candidate',
         {user_id:1, // 김인하로 진행
-        carpool_id : 1,
+        carpool_id : this.get_list.carpool_id,
         start_name:this.search_starting_point, // 출발지(탑승자)
         start_date:this.search_dates[0], // 시작일
         end_date:this.search_dates[1], // 종료일
