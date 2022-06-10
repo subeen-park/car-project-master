@@ -151,10 +151,10 @@ import axios from "axios"
 
         get_driver(){
         axios
-        .get("http://ec2-18-117-73-79.us-east-2.compute.amazonaws.com:3000/list")
+        .get("http://ec2-3-37-128-210.ap-northeast-2.compute.amazonaws.com:3000/list")
         .then(res => {
           console.log(res.data);
-          console.log("get_driver() 함수입니다");
+          console.log("get_driver() 함수입니다. 김인하의 카풀 목록을 불러옵니다.");
           this.get_driver_list=res.data.data  
           
         })
@@ -169,7 +169,7 @@ import axios from "axios"
 
       delete_driver(carpool_id) {
         axios
-        .delete("http://ec2-18-117-73-79.us-east-2.compute.amazonaws.com:3000/list/"+carpool_id)
+        .delete("http://ec2-3-37-128-210.ap-northeast-2.compute.amazonaws.com:3000/list/"+carpool_id)
         .then(res => {
           console.log(res.data);
           console.log("id : " + carpool_id + " delete 성공");
