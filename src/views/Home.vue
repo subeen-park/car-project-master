@@ -1,12 +1,17 @@
 <template> <!-- 검색필터 있는 페이지 -->
 
 
+
+
    
 <v-container>
-  
+
+
   <v-card 
+  
   class="pa-4"
-  ref="search_form">
+  ref="search_form"
+  v-if="register_on == 1 ">
 <h2 align="center"> 카풀 검색 필터 </h2>
 <!-- <p> -- search 테스트 예시입니다 -- </p>
 <p>시작일 : {{search_dates[0]}}</p>
@@ -192,7 +197,10 @@
 <v-row 
   justify="center"
   align="center"> <!-- 카풀 등록 dialog, 운전자용 -->
-
+  
+<v-col cols="2">
+<v-btn @click="register()"> {{msg}} </v-btn>
+  </v-col>
 <v-col
   cols="2"
   >
@@ -435,11 +443,12 @@
 <v-simple-table>
     <template 
     v-slot:default
-    v-if="search_button=='false'">
+    v-if="search_button=='false' && register_button == 'true'">
       <thead>
         <tr>
 
-          <th class="text-center" align="center">
+          <th class="text-center" align="center"
+          @click="sort('carpool_id')">
             no
           </th>
           
@@ -698,7 +707,9 @@ export default {
     data(){
         return{
 
-          test_name:'hi',
+          register_on : 0,
+          msg : "카풀 검색",
+          register_button : "true",
           errors:[],
 
           
@@ -778,6 +789,9 @@ export default {
           */
 
 
+      currentSort:'carpool_id',
+      currendSortDir:'asc',
+
 
 
       
@@ -806,6 +820,16 @@ export default {
     
 
     computed: {
+
+      sortedCats:function() {
+    return this.cats.sort((a,b) => {
+      let modifier = 1;
+      if(this.currentSortDir === 'desc') modifier = -1;
+      if(a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
+      if(a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+      return 0;
+    });
+  },
       dateRangeText () {
         return this.search_dates.join(' ~ ')
       },
@@ -814,9 +838,7 @@ export default {
         return this.input_dates.join(' ~ ')
       },
 
-      sort(){
-
-      },
+      
 
       form() { // 카풀 등록 데이터
         return {
@@ -849,6 +871,28 @@ export default {
 
 
     methods: {
+
+      register(){
+        if(this.register_on ==0){
+          this.register_on = 1;
+          this.msg = "이전으로"
+          this.register_button = "false"
+          
+        }
+
+        else if(this.register_on == 1) {
+          this.register_on = 0;
+          this.msg = "카풀검색"
+           this.register_button = "true"
+        }
+      },
+
+      sort(s){
+        if(s === this.currentSort) {
+          this.currentSortDir = this.currentSortDir==='asc'?'desc':'asc';
+          }
+          this.currentSort = s;
+      },
 
       gender_test(){
         if(this.search_gender === "상관없음"){
