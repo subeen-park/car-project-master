@@ -167,13 +167,11 @@ import axios from "axios"
 
      
 
-      delete_driver(carpool_id) {// {params:{
-            //carpool_id: this.carpool_id
-       // }}
+      delete_driver(carpool_id) {
         axios
         .post("http://ec2-3-37-128-210.ap-northeast-2.compute.amazonaws.com:3000/delete/carpool",
           {
-            carpool_id: this.carpool_id
+            carpool_id: carpool_id
         })
         .then(res => {
           console.log(res);
