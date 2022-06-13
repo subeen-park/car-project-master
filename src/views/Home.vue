@@ -199,7 +199,7 @@
   align="center"> <!-- 카풀 등록 dialog, 운전자용 -->
   
 <v-col cols="2">
-<v-btn @click="register()"> {{msg}} </v-btn>
+<v-btn @click="[register(),delete_info()]"> {{msg}} </v-btn>
   </v-col>
 <v-col
   cols="2"
@@ -500,11 +500,11 @@
           sor
         >
           <td width="5%" align="center">{{ item.carpool_id }}</td>
-          <td width="9%" align="center">{{ item.name }}</td>
+          <td width="7%" align="center">{{ item.name }}</td>
           <td width="7%" align="center">{{ item.gender }}</td>
           <td width="7%" align="center">{{ item.max_passenger }}</td>
-          <td width="8%" align="center">{{ item.start_date.substring(0,10) }}</td>
-          <td width="8%" align="center">{{ item.end_date.substring(0,10) }}</td>
+          <td width="9%" align="center">{{ item.start_date.substring(0,10) }}</td>
+          <td width="9%" align="center">{{ item.end_date.substring(0,10) }}</td>
           <td width="8%" align="center">{{ item.dotw.join(',') }}</td>
           <td width="8%" align="center"> 검색 필요</td>
           <td width="9%" align="center">{{ item.starting_point }}</td>
@@ -524,9 +524,6 @@
       <thead>
         <tr>
 
-          <th class="text-left" width="5%">
-            no
-          </th>
 
           <th class="text-left" width="9%">
             이름
@@ -589,7 +586,6 @@
           v-for="item2 in get_search_list" 
           :key="item2.name"
         >
-          <td width="5%">{{ item2.carpool_id }}</td>
           <td width="7%">{{ item2.name }}</td>
           <td width="7%">{{ item2.gender }}</td>
           <td width="7%">{{ item2.max_passenger }}</td>
@@ -740,7 +736,7 @@ export default {
 
             input_name: null, // 카풀 등록
             input_max_passenger: null,
-            input_dates: ['2022-06-07', '2022-06-15'],
+            input_dates: ['2022-06-15', '2022-06-22'],
 
             input_dotw: null,
             input_starting_point:null,
@@ -877,6 +873,7 @@ export default {
           this.register_on = 1;
           this.msg = "이전으로"
           this.register_button = "false"
+          
           
         }
 

@@ -1,54 +1,209 @@
 <template>
 
-  <div class="text-center">
-    <v-dialog
-      v-model="dialog"
-      width="500"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="red lighten-2"
-          dark
-          v-bind="attrs"
-          v-on="on"
+
+  <v-simple-table>
+    <template 
+    v-slot:default>
+
+    
+      <thead>
+        <tr>
+
+          <th class="text-center">
+            no
+          </th>
+          <th class="text-center">
+            출발지
+          </th>
+
+          <th class="text-center">
+            목적지
+          </th>
+
+          <th class="text-center">
+            시작일
+          </th>
+
+          <th class="text-center">
+            종료일
+          </th>
+
+          <th class="text-center">
+            카풀 요일
+          </th>
+
+          <th class="text-center">
+            actions
+          </th>
+
+        </tr>
+      </thead>
+
+
+      <tbody>
+
+          <tr
+          v-for="driver in get_driver_list" 
+          :key="driver.name"
         >
-          Click Me
-        </v-btn>
-      </template>
+          <td v-if="driver.name==='김인하'" class="text-center">{{ driver.carpool_id }}</td> 
+          <td v-if="driver.name==='김인하'" class="text-center">{{ driver.starting_point }}</td>
+          <td v-if="driver.name==='김인하'" class="text-center">{{ driver.destination_point }}</td>
+          <td v-if="driver.name==='김인하'" class="text-center">{{ driver.start_date.substring(0,10) }}</td>
+          <td v-if="driver.name==='김인하'" class="text-center">{{ driver.end_date.substring(0,10) }}</td>
+          <td v-if="driver.name==='김인하'" class="text-center">{{ driver.dotw.join(',') }}</td> 
+          <td v-if="driver.name==='김인하'" class="text-center"> 
 
-      <v-card>
-        <v-card-title class="text-h5 grey lighten-2">
-          Privacy Policy
-        </v-card-title>
-
-        <v-card-text>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        </v-card-text>
-
-        <v-divider></v-divider>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
           <v-btn
             color="primary"
             text
-            @click="dialog = false"
+            @click="delete_driver(driver.carpool_id)"
           >
-            I accept
+            삭제하기
           </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </div>
+
+      
+    </td> 
+  </tr>
+          
+          
+      </tbody>
+      
+      
+    </template>
+    <template v-slot:top>
+      <v-toolbar
+        flat
+      >
+        <v-toolbar-title>김인하님이 요청한 카풀 리스트</v-toolbar-title>
+
+        
+        <v-divider
+          class="mx-4"
+          inset
+          vertical
+        ></v-divider>
+        <v-spacer></v-spacer>
+      </v-toolbar>
+    </template>
+
+
+            
+
+  
+  </v-simple-table>
+
+
+
 </template>
 
 
+
+
+
 <script>
+import axios from "axios"
+
+
   export default {
-    data () {
-      return {
-        dialog: false,
-      }
+    
+      
+    data: () => ({
+
+      users: null,
+      test2_data: null,
+
+      get_driver_list: [],
+
+      dialog: false,
+
+
+     
+    }),
+
+
+
+    
+
+    created () {
+      this.test();
+      this.get_driver();
+      
+    },
+
+    methods: {
+        test(){
+        axios
+        .get("https://dummyjson.com/products")
+        .then(res => {
+          console.log(res.data);
+          this.test2_data=res.data.data
+        })
+        .catch(err => {
+          console.log(err);
+        });
+        },
+
+        test2(carpool_id){
+        console.log(carpool_id)
+        },
+        
+
+        get_driver(){
+        axios
+        .get("http://ec2-3-37-128-210.ap-northeast-2.compute.amazonaws.com:3000/list")
+        .then(res => {
+          console.log(res.data);
+          console.log("get_driver() 함수입니다. 김인하의 카풀 목록을 불러옵니다.");
+          this.get_driver_list=res.data.data  
+          
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
+        },
+      
+
+     
+
+      delete_driver(carpool_id) {
+        axios
+        .delete("http://ec2-3-37-128-210.ap-northeast-2.compute.amazonaws.com:3000/list/"+carpool_id, 
+          {
+            carpool_id: this.carpool_id,
+            name: this.name,
+            gender: this.gender,
+            max_passenger: this.max_passenger,
+            carpool_id: this.carpool_id,
+            start_date: this.start_date,
+            end_date: this.end_date,
+            dotw: this.dotw,
+            starting_point: this.starting_point,
+            destination_point: this.destination_point,
+            desired_arrival_time: this.desired_arrival_time,
+
+
+          
+        })
+        .then(res => {
+          console.log(res);
+          console.log("id : " + carpool_id + " delete 성공");
+          this.get_driver();
+        })
+        .catch(err => {
+          console.log(err);
+          console.log("id : " + carpool_id + " delete 실패");
+        }); 
+
+        this.editedIndex = this.desserts.indexOf(item)
+        this.editedItem = Object.assign({}, item)
+        this.dialogDelete = true
+      },
+
+     
     },
   }
+   // https://vuetifyjs.com/en/components/data-tables/#crud-actions
 </script>
+
