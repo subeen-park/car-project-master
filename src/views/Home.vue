@@ -673,7 +673,7 @@
           <v-btn
             color="blue darken-1"
             text
-            @click="[candidate(), dialog2=false]"
+            @click="[candidate(item2.carpool_id), dialog2=false]"
           >
             신청
             </v-btn>
@@ -942,6 +942,11 @@ export default {
       },
 
       insertNew() {     // 카풀 등록 함수
+      if(this.input_dates[0] == this.input_dates[1]){
+        alert("시작일과 종료일은 같은 값일 수 없습니다.")
+        return 0;
+      }
+      else {
       axios
         .post("http://ec2-3-37-128-210.ap-northeast-2.compute.amazonaws.com:3000/register", 
         {client_id: 1, // 사용자id (DB id랑 동일)
@@ -969,6 +974,7 @@ export default {
         .then(()=>{
 
         })
+      }
 
       // if(this.insert_error==false){ // input 값이 다 입력되어 있어서 insert_error 가 false 이면, push 진행
       //   this.list_test.push({
@@ -1053,11 +1059,11 @@ export default {
 
        },
 
-       candidate(){
+       candidate(carpool_id){
         axios
         .post( 'http://ec2-3-37-128-210.ap-northeast-2.compute.amazonaws.com:3000/candidate',
         {user_id:1, // 김인하로 진행
-        carpool_id : this.get_list.carpool_id,
+        carpool_id : carpool_id,
         start_name:this.search_starting_point, // 출발지(탑승자)
         start_date:this.search_dates[0], // 시작일
         end_date:this.search_dates[1], // 종료일
@@ -1068,11 +1074,13 @@ export default {
         .then(res => {
           console.log(res)
           console.log("candidate 함수입니다. 카풀 신청을 진행합니다.")
+          console.log("탑승자가 작성한 신청 시간 : " + this.candidate_desired_time )
+          console.log("운전자 아이디 : "+ carpool_id)
           
         })
         .catch(err => {
           console.log(err)
-          console.log('candidate 함수 안옴;')
+          console.log('candidate 요청 실패;')
         })
         .then(()=>{
 
