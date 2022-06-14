@@ -29,6 +29,10 @@
           </th>
 
           <th class="text-center">
+            도착시간
+          </th>
+
+          <th class="text-center">
             카풀 요일
           </th>
 
@@ -51,6 +55,7 @@
           <td v-if="driver.name==='김인하'" class="text-center">{{ driver.destination_point }}</td>
           <td v-if="driver.name==='김인하'" class="text-center">{{ driver.start_date.substring(0,10) }}</td>
           <td v-if="driver.name==='김인하'" class="text-center">{{ driver.end_date.substring(0,10) }}</td>
+          <td v-if="driver.name==='김인하'" class="text-center">{{ driver.desired_arrival_time.substring(0,5)}}</td>
           <td v-if="driver.name==='김인하'" class="text-center">{{ driver.dotw.join(',') }}</td> 
           <td v-if="driver.name==='김인하'" class="text-center"> 
 
@@ -111,7 +116,6 @@ import axios from "axios"
     data: () => ({
 
       users: null,
-      test2_data: null,
 
       get_driver_list: [],
 
@@ -126,27 +130,11 @@ import axios from "axios"
     
 
     created () {
-      this.test();
       this.get_driver();
       
     },
 
     methods: {
-        test(){
-        axios
-        .get("https://dummyjson.com/products")
-        .then(res => {
-          console.log(res.data);
-          this.test2_data=res.data.data
-        })
-        .catch(err => {
-          console.log(err);
-        });
-        },
-
-        test2(carpool_id){
-        console.log(carpool_id)
-        },
         
 
         get_driver(){
