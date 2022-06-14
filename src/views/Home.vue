@@ -13,16 +13,6 @@
   ref="search_form"
   v-if="register_on == 1 ">
 <h2 align="center"> 카풀 검색 필터 </h2>
-<!-- <p> -- search 테스트 예시입니다 -- </p>
-<p>시작일 : {{search_dates[0]}}</p>
-<p>종료일 : {{search_dates[1]}}</p>
-<p>출발지 :{{search_starting_point}}</p>
-<p>도착지 :{{search_destination_point}}</p>
-<p>요일 :{{search_dotw}}</p>
-<p>성별 :{{search_gender}}</p>
-<p>도착시간 :{{search_destination_time}}</p>
-<p>버튼값 :{{search_button}}</p>
-    <v-btn @click="count_var">테스트</v-btn>  -->
 
 <v-spacer></v-spacer>
 
@@ -569,10 +559,14 @@
             추가시간
           </th>
 
+          <th class="text-left">
+            candidate
+          </th>
+
           
 
            <th class="text-left">
-
+            map
           </th>
 
           
@@ -593,11 +587,12 @@
           <td width="9%">{{ item2.starting_point }}</td>
           <td width="9%">{{ item2.destination_point }}</td>
           <td width="9%">{{ item2.desired_arrival_time.substring(0,5) }}</td>
-          <td width="9%">{{ item2.ride_time}}</td>
-          <td width="9%">{{ item2.time_difference}}</td>
+          <td width="9%">0{{ item2.ride_time.substring(0,4)}}</td>
+          <td width="9%">0{{ item2.time_difference.substring(0,4)}}</td>
           
 
 <td width="7%">
+
   <template>
   <v-row justify="center">
     <v-dialog
@@ -607,7 +602,9 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
+          @click="candidate_date(item2.starting_point)"
           color="primary"
+          text
           dark
           v-bind="attrs"
           v-on="on"
@@ -644,7 +641,7 @@
             
 
               <v-col cols="12">
-                <v-text> 운전자 출발지 : {{search_starting_point}}</v-text>
+                <v-text> 운전자 출발지 : {{candidate_driver_start}}</v-text>
               </v-col>
 
 
@@ -652,15 +649,12 @@
                 <v-text> 도착지 : {{search_destination_point}}</v-text>
               </v-col>
 
-              
-              
               <v-col cols="12">
-                <v-text-field
-                  v-model="candidate_start_name"
-                  label="탑승 장소 ( 직접 입력. ex: 인하대 )"
-                  required
-                ></v-text-field>
+                <v-text> 탑승지 : {{search_starting_point}}</v-text>
               </v-col>
+
+              
+          
 
 
 
@@ -683,61 +677,6 @@
           <v-spacer></v-spacer>
 
 
-
-
-
-
-      <v-dialog
-      v-model="dialog3"
-      persistent
-      max-width="600px"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="primary"
-          dark
-          v-bind="attrs"
-          v-on="on"
-          @click="map()"
-        >
-          지도보기
-        </v-btn>
-      </template>
-      <v-card>
-        <v-card-title>
-          <span class="text-h5">지도</span>
-        </v-card-title>
-
-         <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col
-                cols="12"
-              >
-                <v-text class="h3"> TEST </v-text>
-              </v-col>
-            </v-row>
-          </v-container>
-         </v-card-text>
-
-      
-      <v-card-actions>
-        <v-btn
-            color="blue darken-1"
-            text
-            @click="dialog3 = false"
-          >
-            닫기
-          </v-btn>
-      </v-card-actions>
-      </v-card>
-      </v-dialog>
-
-
-
-
-
-
           
           <v-btn
             color="blue darken-1"
@@ -758,6 +697,94 @@
       </v-dialog>
     </v-row>
   </template>
+</td>
+
+
+
+ <!-- 지도 버튼 -->
+<td width="7%">
+<template>
+  <v-row justify="center">
+    <v-dialog
+      v-model="dialog3"
+      persistent
+      max-width="600px"
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          @click="map(item2.starting_point)"
+          color="primary"
+          text
+          dark
+          v-bind="attrs"
+          v-on="on"
+        >
+          지도
+        </v-btn>
+      </template>
+      <v-card>
+        <v-card-title>
+          <span class="text-h5">지도</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              
+
+             
+            
+
+              <v-col cols="12">
+                <v-text> 운전자 출발지 : {{candidate_driver_start}}</v-text>
+              </v-col>
+
+
+              <v-col cols="12">
+                <v-text> 도착지 : {{search_destination_point}}</v-text>
+              </v-col>
+
+              <v-col cols="12">
+                <v-text> 탑승지 : {{search_starting_point}}</v-text>
+              </v-col>
+
+              
+          
+
+
+
+
+
+
+              
+             
+            </v-row>
+          </v-container>
+          <small>*indicates required field</small>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+
+          
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="dialog3 = false"
+          >
+            닫기
+          </v-btn>
+         
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-row>
+  </template>
+
+
+
+
+
+
 </td>
 
         </tr>
@@ -785,6 +812,8 @@ export default {
           errors:[],
 
           
+
+          
           
 
           // 카풀 search 할 때 필요한 데이터들
@@ -806,6 +835,7 @@ export default {
             dialog: false, // 카풀 등록할 dialog
             dialog2: false,  // 신청 dialog 
             dialog3: false, // 지도 diaglo
+            dialog3_data:1,
 
   
 
@@ -828,7 +858,7 @@ export default {
 
 
             candidate_desired_time : null, // 카풀 신청. 탑승 희망 시간
-            candidate_start_name : null,
+            candidate_driver_start:"",// 신청폼에서 운전자의 시작 지점
 
 
 
@@ -945,6 +975,11 @@ export default {
 
 
     methods: {
+
+      candidate_date(starting_point){
+        this.candidate_driver_start = starting_point;
+
+      },
 
       register(){
         if(this.register_on ==0){
@@ -1119,13 +1154,15 @@ export default {
 
        },
 
-       map(){
+       map(starting_point){
+        this.candidate_driver_start = starting_point;
+        
         axios
-        .post( 'http://ec2-3-37-128-210.ap-northeast-2.compute.amazonaws.com:3000/map' ,
+        .post("http://ec2-3-37-128-210.ap-northeast-2.compute.amazonaws.com:3000/map" ,
         {
-          start_name:this.search_starting_point, // 출발지
+          start_name:this.candidate_driver_start, // 출발지
           goal_name:this.search_destination_point, // 도착지
-          stops1_place: this.candidate_start_name// 경유지
+          stops1_place: this.search_starting_point// 경유지
         })
         .then(res => {
           console.log(res)
@@ -1147,6 +1184,7 @@ export default {
         .then(()=>{
 
         })
+        
        },
 
        candidate(carpool_id){
