@@ -569,9 +569,7 @@
             추가시간
           </th>
 
-          <th class="text-left">
-            거리차이
-          </th>
+          
 
            <th class="text-left">
 
@@ -597,8 +595,7 @@
           <td width="9%">{{ item2.desired_arrival_time.substring(0,5) }}</td>
           <td width="9%">{{ item2.ride_time}}</td>
           <td width="9%">{{ item2.time_difference}}</td>
-          <td width="9%">{{ item2.distance_difference}}</td>
-
+          
 
 <td width="7%">
   <template>

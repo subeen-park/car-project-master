@@ -6,7 +6,7 @@ import Past from '../views/Past.vue'
 import Request from '../views/Request.vue'
 import Passenger from '../views/Passenger.vue'
 import Driver from '../views/Driver.vue'
-import Chat from '../views/Chat.vue'
+import Request2 from '../views/Request2.vue'
 
 Vue.use(VueRouter)
 
@@ -32,9 +32,9 @@ const routes = [
   },
 
   {
-    path: '/chat',
-    name: 'Chat',
-    component: Chat
+    path: '/request2',
+    name: 'Request2',
+    component: Request2
   },
 
   {
