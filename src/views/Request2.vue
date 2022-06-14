@@ -10,7 +10,7 @@
         <tr>
 
           <th class="text-center">
-            이름
+            요청자
           </th>
           <th class="text-center">
             출발지
@@ -50,14 +50,14 @@
           v-for="driver in get_driver_list" 
           :key="driver.carpool_id"
         >
-          <td class="text-center">{{ driver.driver_name }}</td> 
-          <td class="text-center">{{ driver.starting_point }}</td>
-          <td class="text-center">{{ driver.destination_point }}</td>
-          <td  class="text-center">{{ driver.start_date.substring(0,10) }}</td>
-          <td  class="text-center">{{ driver.end_date.substring(0,10) }}</td>
-          <td  class="text-center">{{ driver.desired_arrival_time.substring(0,5)}}</td>
-          <td  class="text-center">{{ driver.dotw.join(',') }}</td> 
-          <td  width="9%" class="text-center"> 
+          <td v-if="driver.driver_name==='이길동'" class="text-center">{{ driver.driver_name }}</td> 
+          <td v-if="driver.driver_name==='이길동'" class="text-center">{{ driver.starting_point }}</td>
+          <td v-if="driver.driver_name==='이길동'" class="text-center">{{ driver.destination_point }}</td>
+          <td v-if="driver.driver_name==='이길동'" class="text-center">{{ driver.start_date.substring(0,10) }}</td>
+          <td v-if="driver.driver_name==='이길동'" class="text-center">{{ driver.end_date.substring(0,10) }}</td>
+          <td v-if="driver.driver_name==='이길동'" class="text-center">{{ driver.desired_arrival_time.substring(0,5)}}</td>
+          <td v-if="driver.driver_name==='이길동'" class="text-center">{{ driver.dotw.join(',') }}</td> 
+          <td v-if="driver.driver_name==='이길동'" width="9%" class="text-center"> 
 
           <v-btn
             color="primary"
