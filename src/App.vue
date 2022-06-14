@@ -42,9 +42,12 @@
         <v-list-item link>
           <v-list-item-content>
             <v-list-item-title class="text-h6">
-              김인하
+              <v-btn v-if="login_num==1" @click="login()"> Login </v-btn>
+              <v-spacer> </v-spacer>
+              <v-spacer> </v-spacer>
+              {{login_name}}
             </v-list-item-title>
-            <v-list-item-subtitle>ㅇㅇ 회사</v-list-item-subtitle>
+            <v-list-item-subtitle>{{login_com}}</v-list-item-subtitle>
           </v-list-item-content>
 
           
@@ -132,6 +135,10 @@ import Home from './views/Home.vue'
 
     data() {
       return {
+      login_login:"Login",
+      login_name:"",
+      login_com:"",
+      login_num : 1,
 
       items1:[
         { title: 'Home', icon: 'mdi-view-dashboard', to: '/'}], // 메인 화면. 검색필터 있음 
@@ -162,5 +169,15 @@ import Home from './views/Home.vue'
       drawer:false,
      }
     },
+
+    methods: {
+      login(){
+        this.login_login="Logout"
+        this.login_name="김인하"
+        this.login_com="OO전자"
+        this.login_num = 0;
+
+      },
+    }
   }
 </script>

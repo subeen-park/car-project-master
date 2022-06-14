@@ -207,7 +207,7 @@
 
     <v-dialog
       v-model="dialog"
-      max-width="600px"
+      max-width="650px"
     >
     
       <template v-slot:activator="{ on, attrs }">
@@ -260,16 +260,16 @@
 
           <v-col
             cols="12"
-            sm="6">
+            sm="7">
             <v-date-picker
                v-model="input_dates"
                range
             ></v-date-picker>
           </v-col>
 
-                <v-col
+              <v-col
       cols="12"
-      sm="6"
+      sm="5"
     >
       <v-text-field
         v-model="dateRangeText_input"
@@ -594,7 +594,7 @@
           <td width="9%">{{ item2.dotw.join(',') }}</td>
           <td width="9%">{{ item2.starting_point }}</td>
           <td width="9%">{{ item2.destination_point }}</td>
-          <td width="9%">{{ item2.desired_arrival_time }}</td>
+          <td width="9%">{{ item2.desired_arrival_time.substring(0,5) }}</td>
           <td width="9%">{{ item2.ride_time}}</td>
           <td width="9%">{{ item2.time_difference}}</td>
           <td width="9%">{{ item2.distance_difference}}</td>
@@ -1062,7 +1062,8 @@ export default {
        candidate(carpool_id){
         axios
         .post( 'http://ec2-3-37-128-210.ap-northeast-2.compute.amazonaws.com:3000/candidate',
-        {user_id:1, // 김인하로 진행
+        {
+        user_id:1, // 김인하로 진행
         carpool_id : carpool_id,
         start_name:this.search_starting_point, // 출발지(탑승자)
         start_date:this.search_dates[0], // 시작일
@@ -1076,11 +1077,19 @@ export default {
           console.log("candidate 함수입니다. 카풀 신청을 진행합니다.")
           console.log("탑승자가 작성한 신청 시간 : " + this.candidate_desired_time )
           console.log("운전자 아이디 : "+ carpool_id)
+          this.candidate_desired_time = null;
           
         })
         .catch(err => {
           console.log(err)
           console.log('candidate 요청 실패;')
+          console.log("운전자 아이디 : "+ carpool_id)
+          console.log("시작위치 : "+ this.search_starting_point)
+          console.log("시작일 : "+ this.search_dates[0])
+          console.log("종료일 : "+ this.search_dates[1])
+          console.log("요일 : "+ this.search_dotw)
+          console.log("도착시간 : "+ this.candidate_desired_time)
+          this.candidate_desired_time = null;
         })
         .then(()=>{
 
