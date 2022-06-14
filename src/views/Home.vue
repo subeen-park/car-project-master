@@ -641,6 +641,19 @@
                 <v-text> 카풀 요일 : {{search_dotw.join(',')}}</v-text>
               </v-col>
 
+            
+
+              <v-col cols="12">
+                <v-text> 운전자 출발지 : {{search_starting_point}}</v-text>
+              </v-col>
+
+
+              <v-col cols="12">
+                <v-text> 도착지 : {{search_destination_point}}</v-text>
+              </v-col>
+
+              
+              
               <v-col cols="12">
                 <v-text-field
                   v-model="candidate_start_name"
@@ -648,6 +661,8 @@
                   required
                 ></v-text-field>
               </v-col>
+
+
 
 
 
@@ -683,6 +698,7 @@
           dark
           v-bind="attrs"
           v-on="on"
+          @click="map()"
         >
           지도보기
         </v-btn>
@@ -1038,24 +1054,6 @@ export default {
         })
       }
 
-      // if(this.insert_error==false){ // input 값이 다 입력되어 있어서 insert_error 가 false 이면, push 진행
-      //   this.list_test.push({
-      //   "name":this.input_name,
-      //   "gender":this.input_gender, 
-      //   "max_passenger":this.input_max_passenger,
-      //   "start_date":this.input_dates[0],
-      //   "end_date":this.input_dates[1],
-      //   "dotw":this.input_dotw,  
-      //   // "start_time":this.input_start_time,
-      //   "starting_point":this.input_starting_point,
-      //   "destination_point":this.input_destination_point, 
-      //   // "estimated_start_time":"", 
-      //   // "destination_time":this.input_destination_time, 
-      //   // "extra_time":"", 
-      //   // "extra_distance":"" })
-      //   })
-      // }
-
 
 
 
@@ -1121,20 +1119,48 @@ export default {
 
        },
 
+       map(){
+        axios
+        .post( 'http://ec2-3-37-128-210.ap-northeast-2.compute.amazonaws.com:3000/map' ,
+        {
+          start_name:this.search_starting_point, // 출발지
+          goal_name:this.search_destination_point, // 도착지
+          stops1_place: this.candidate_start_name// 경유지
+        })
+        .then(res => {
+          console.log(res)
+          console.log("MAP 함수 성공.")
+          console.log("입력한 탑승자 도착시간 : "+ this.candidate_desired_time)
+          console.log("입력한 탑승자 시작점 : "+ this.candidate_start_name)
+          console.log("입력한 출발지 : "+ this.search_starting_point)
+          console.log("입력한 도착지 : "+ this.search_destination_point)
+          
+        })
+        .catch(err => {
+          console.log(err)
+          console.log('MAP 요청 실패')
+          console.log("입력한 탑승자 도착시간 : "+ this.candidate_desired_time)
+          console.log("입력한 탑승자 시작점 : "+ this.candidate_start_name)
+          console.log("입력한 출발지 : "+ this.search_starting_point)
+          console.log("입력한 도착지 : "+ this.search_destination_point)
+        })
+        .then(()=>{
+
+        })
+       },
+
        candidate(carpool_id){
         axios
         .post( 'http://ec2-3-37-128-210.ap-northeast-2.compute.amazonaws.com:3000/candidate',
         {
         user_id:1, // 김인하로 진행
         carpool_id : carpool_id,
-        start_name:this.search_starting_point, // 출발지(탑승자)
         start_date:this.search_dates[0], // 시작일
         end_date:this.search_dates[1], // 종료일
         dotw:this.search_dotw, // 요일
         desired_time:this.candidate_desired_time, // 탑승 희망 시간
         start_name:this.candidate_start_name,
-        },
-        )
+        })
         .then(res => {
           console.log(res)
           console.log("candidate 함수입니다. 카풀 신청을 진행합니다.")
