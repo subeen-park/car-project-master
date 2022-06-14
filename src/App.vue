@@ -101,6 +101,36 @@
         </v-list-item>
       </v-list-group>
 
+
+      <v-list-group
+            v-for="item in items3"
+            :key="item.title"
+            v-model="item.active"
+            
+            >
+
+
+        <template v-slot:activator>
+          <v-list-item-content>
+            <v-list-item-title v-text="item.title"></v-list-item-title>
+          </v-list-item-content>
+        </template>
+
+        <v-list-item
+         
+          v-for="child in item.items_3"
+          :key="child.title"
+          :to="child.to"
+          link
+        >
+
+
+          <v-list-item-content>
+            <v-list-item-title v-text="child.title"></v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-group>
+
       </v-list>
 
                   
@@ -148,9 +178,10 @@ import Home from './views/Home.vue'
           action: 'mdi-account', // 마이페이지, 아이콘
           active: false,
           items: [
+            
             { title: 'Passenger', to: '/passenger' },
             { title: 'Driver', to: '/driver' },
-            { title: 'Request', to: '/request' },
+            //{ title: 'Request', to: '/request' },
             { title: 'Chat', to: '/chat' },
             { title: 'Past', to: '/past' },
             
@@ -160,6 +191,17 @@ import Home from './views/Home.vue'
         }
     
         ],
+
+      items3: [{
+        items_3:[
+          
+        {title: '보낸 요청', to:'/request'},
+        {title: '받은 요청', to:'/chat'},
+        ],
+
+        title: 'Carpool'
+      }
+      ],
         
         top1:[
         { title: ' INFORMATION ABOUT MYPAGE ', icon: 'mdi-view-dashboard', to: '/info'},

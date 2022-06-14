@@ -43,7 +43,7 @@
       <tbody>
 
           <tr
-          v-for="driver in get_driver_list" 
+          v-for="driver in get_passenger_list" 
           :key="driver.name"
         >
           <td v-if="driver.name==='김인하'" class="text-center">{{ driver.carpool_id }}</td> 
@@ -113,7 +113,7 @@ import axios from "axios"
       users: null,
       test2_data: null,
 
-      get_driver_list: [],
+      get_passenger_list: [],
 
       dialog: false,
 
@@ -126,40 +126,24 @@ import axios from "axios"
     
 
     created () {
-      this.test();
-      this.get_driver();
+      this.get_passenger();
       
     },
 
     methods: {
-        test(){
-        axios
-        .get("https://dummyjson.com/products")
-        .then(res => {
-          console.log(res.data);
-          this.test2_data=res.data.data
-        })
-        .catch(err => {
-          console.log(err);
-        });
-        },
-
-        test2(carpool_id){
-        console.log(carpool_id)
-        },
         
 
-        get_driver(){
-        axios
-        .get("http://ec2-3-37-128-210.ap-northeast-2.compute.amazonaws.com:3000/list")
+        get_passenger(){
+        axios.get("http://ec2-3-37-128-210.ap-northeast-2.compute.amazonaws.com:3000/passenger?user_id=1")
         .then(res => {
           console.log(res.data);
-          console.log("get_driver() 함수입니다. 김인하의 카풀 목록을 불러옵니다.");
-          this.get_driver_list=res.data.data  
+          console.log("get_passenger() 함수입니다. 김인하의 (탑승자로) 카풀 신청 목록을 불러옵니다.");
+          this.get_passenger_list=res.data.data; 
           
         })
         .catch(err => {
           console.log(err);
+          console.log("get_passenger() 함수 불러오기 실패 ! 요청한 카풀 목록 못가져옴");
         });
 
         },
