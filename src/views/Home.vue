@@ -622,11 +622,7 @@
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col
-                cols="12"
-              >
-                <v-text class="h3"> (탑승자)출발지 : {{search_starting_point}}</v-text>
-              </v-col>
+              
 
               <v-col
                 cols="12"
@@ -645,6 +641,16 @@
                 <v-text> 카풀 요일 : {{search_dotw.join(',')}}</v-text>
               </v-col>
 
+              <v-col cols="12">
+                <v-text-field
+                  v-model="candidate_start_name"
+                  label="탑승 장소 ( 직접 입력. ex: 인하대 )"
+                  required
+                ></v-text-field>
+              </v-col>
+
+
+
 
               <v-col cols="12">
                 <v-text-field
@@ -660,6 +666,63 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
+
+
+
+
+
+
+      <v-dialog
+      v-model="dialog3"
+      persistent
+      max-width="600px"
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          color="primary"
+          dark
+          v-bind="attrs"
+          v-on="on"
+        >
+          지도보기
+        </v-btn>
+      </template>
+      <v-card>
+        <v-card-title>
+          <span class="text-h5">지도</span>
+        </v-card-title>
+
+         <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col
+                cols="12"
+              >
+                <v-text class="h3"> TEST </v-text>
+              </v-col>
+            </v-row>
+          </v-container>
+         </v-card-text>
+
+      
+      <v-card-actions>
+        <v-btn
+            color="blue darken-1"
+            text
+            @click="dialog3 = false"
+          >
+            닫기
+          </v-btn>
+      </v-card-actions>
+      </v-card>
+      </v-dialog>
+
+
+
+
+
+
+          
           <v-btn
             color="blue darken-1"
             text
@@ -726,6 +789,7 @@ export default {
 
             dialog: false, // 카풀 등록할 dialog
             dialog2: false,  // 신청 dialog 
+            dialog3: false, // 지도 diaglo
 
   
 
@@ -748,6 +812,7 @@ export default {
 
 
             candidate_desired_time : null, // 카풀 신청. 탑승 희망 시간
+            candidate_start_name : null,
 
 
 
@@ -1067,14 +1132,17 @@ export default {
         end_date:this.search_dates[1], // 종료일
         dotw:this.search_dotw, // 요일
         desired_time:this.candidate_desired_time, // 탑승 희망 시간
+        start_name:this.candidate_start_name,
         },
         )
         .then(res => {
           console.log(res)
           console.log("candidate 함수입니다. 카풀 신청을 진행합니다.")
           console.log("탑승자가 작성한 신청 시간 : " + this.candidate_desired_time )
+          console.log("탑승자가 작성한 시작점 : " + this.candidate_start_name )
           console.log("운전자 아이디 : "+ carpool_id)
           this.candidate_desired_time = null;
+          this.candidate_start_name = null;
           
         })
         .catch(err => {
@@ -1086,7 +1154,9 @@ export default {
           console.log("종료일 : "+ this.search_dates[1])
           console.log("요일 : "+ this.search_dotw)
           console.log("도착시간 : "+ this.candidate_desired_time)
+          console.log("시작점 : "+ this.candidate_start_name)
           this.candidate_desired_time = null;
+          this.candidate_start_name = null;
         })
         .then(()=>{
 
