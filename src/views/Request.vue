@@ -10,7 +10,7 @@
         <tr>
 
           <th class="text-center">
-            no
+            이름
           </th>
           <th class="text-center">
             출발지
@@ -29,6 +29,10 @@
           </th>
 
           <th class="text-center">
+            도착시간
+          </th>
+
+          <th class="text-center">
             카풀 요일
           </th>
 
@@ -43,23 +47,24 @@
       <tbody>
 
           <tr
-          v-for="driver in get_passenger_list" 
-          :key="driver.name"
+          v-for="driver in get_driver_list" 
+          :key="driver.carpool_id"
         >
-          <td v-if="driver.name==='김인하'" class="text-center">{{ driver.carpool_id }}</td> 
-          <td v-if="driver.name==='김인하'" class="text-center">{{ driver.starting_point }}</td>
-          <td v-if="driver.name==='김인하'" class="text-center">{{ driver.destination_point }}</td>
-          <td v-if="driver.name==='김인하'" class="text-center">{{ driver.start_date.substring(0,10) }}</td>
-          <td v-if="driver.name==='김인하'" class="text-center">{{ driver.end_date.substring(0,10) }}</td>
-          <td v-if="driver.name==='김인하'" class="text-center">{{ driver.dotw.join(',') }}</td> 
-          <td v-if="driver.name==='김인하'" class="text-center"> 
+          <td  class="text-center">{{ driver.driver_name }}</td> 
+          <td  class="text-center">{{ driver.starting_point }}</td>
+          <td class="text-center">{{ driver.destination_point }}</td>
+          <td  class="text-center">{{ driver.start_date.substring(0,10) }}</td>
+          <td  class="text-center">{{ driver.end_date.substring(0,10) }}</td>
+          <td  class="text-center">{{ driver.desired_arrival_time.substring(0,5)}}</td>
+          <td  class="text-center">{{ driver.dotw.join(',') }}</td> 
+          <td  class="text-center"> 
 
           <v-btn
             color="primary"
             text
             @click="delete_driver(driver.carpool_id)"
           >
-            삭제하기
+            취소하기
           </v-btn>
 
       
@@ -111,9 +116,8 @@ import axios from "axios"
     data: () => ({
 
       users: null,
-      test2_data: null,
 
-      get_passenger_list: [],
+      get_driver_list: [],
 
       dialog: false,
 
@@ -126,24 +130,24 @@ import axios from "axios"
     
 
     created () {
-      this.get_passenger();
+      this.get_driver();
       
     },
 
     methods: {
         
 
-        get_passenger(){
-        axios.get("http://ec2-3-37-128-210.ap-northeast-2.compute.amazonaws.com:3000/passenger?user_id=1")
+        get_driver(){
+        axios
+        .get("http://ec2-3-37-128-210.ap-northeast-2.compute.amazonaws.com:3000/passenger?user_id=1")
         .then(res => {
           console.log(res.data);
-          console.log("get_passenger() 함수입니다. 김인하의 (탑승자로) 카풀 신청 목록을 불러옵니다.");
-          this.get_passenger_list=res.data.data; 
+          console.log("get_driver() 함수입니다. 김인하의 카풀 목록을 불러옵니다.");
+          this.get_driver_list=res.data.data  
           
         })
         .catch(err => {
           console.log(err);
-          console.log("get_passenger() 함수 불러오기 실패 ! 요청한 카풀 목록 못가져옴");
         });
 
         },
@@ -153,26 +157,14 @@ import axios from "axios"
 
       delete_driver(carpool_id) {
         axios
-        .delete("http://ec2-3-37-128-210.ap-northeast-2.compute.amazonaws.com:3000/list/"+carpool_id, 
+        .post("http://ec2-3-37-128-210.ap-northeast-2.compute.amazonaws.com:3000/delete/carpool",
           {
-            carpool_id: this.carpool_id,
-            name: this.name,
-            gender: this.gender,
-            max_passenger: this.max_passenger,
-            carpool_id: this.carpool_id,
-            start_date: this.start_date,
-            end_date: this.end_date,
-            dotw: this.dotw,
-            starting_point: this.starting_point,
-            destination_point: this.destination_point,
-            desired_arrival_time: this.desired_arrival_time,
-
-
-          
+            carpool_id: carpool_id
         })
         .then(res => {
           console.log(res);
           console.log("id : " + carpool_id + " delete 성공");
+          alert("삭제되었습니다.")
           this.get_driver();
         })
         .catch(err => {

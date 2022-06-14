@@ -157,22 +157,18 @@
 
 <script>
 import Home from './views/Home.vue'
-
   export default {
     components:{
       Home
     },
-
     data() {
       return {
       login_login:"Login",
       login_name:"",
       login_com:"",
       login_num : 1,
-
       items1:[
         { title: 'Home', icon: 'mdi-view-dashboard', to: '/'}], // 메인 화면. 검색필터 있음 
-
       items2: [ 
         {
           action: 'mdi-account', // 마이페이지, 아이콘
@@ -191,14 +187,12 @@ import Home from './views/Home.vue'
         }
     
         ],
-
       items3: [{
         items_3:[
           
         {title: '보낸 요청', to:'/request'},
-        {title: '받은 요청', to:'/chat'},
+        {title: '받은 요청', to:'/request2'},
         ],
-
         title: 'Carpool'
       }
       ],
@@ -207,18 +201,15 @@ import Home from './views/Home.vue'
         { title: ' INFORMATION ABOUT MYPAGE ', icon: 'mdi-view-dashboard', to: '/info'},
         ],
       
-
       drawer:false,
      }
     },
-
     methods: {
       login(){
         this.login_login="Logout"
         this.login_name="김인하"
         this.login_com="OO전자"
         this.login_num = 0;
-
       },
     }
   }
